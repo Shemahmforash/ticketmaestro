@@ -1,5 +1,6 @@
-#Event venue 
+#Event venue
     This class represents an event venue. To use it one can proceed as following:
+
     ```
         import event
 
