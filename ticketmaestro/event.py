@@ -42,6 +42,8 @@ class Event:
         """
         User books a set of seats in a specific section
         Seats - a dictionary with row: [positions]
+        for instance, to book first 2 seats in first row:
+        ev.book_tickets(0, {0: [0,1]}, user_id)
         """
 
         if (not self.venue[section]):
@@ -97,6 +99,7 @@ class Event:
         if (not tickets):
             raise Exception('No %d adjacent tickets found!' % howmany)
 
+        # books and buys the tickets
         self.book_tickets(tickets['section'], {
                           tickets['tickets']['row']:
                           tickets['tickets']['seats']
@@ -114,10 +117,15 @@ class Event:
                 'No %d adjacent tickets found in section!' %
                 (howmany, section))
 
+        # books and buys the tickets
         self.book_tickets(section, {tickets['row']: tickets['seats']}, user_id)
         self.buy_tickets(section, {tickets['row']: tickets['seats']}, user_id)
 
     def _section_best_seats(self, section, howmany):
+        """
+        tries to find consecutive seats by going trough all rows in section
+        """
+
         if (not self.venue[section]):
             raise Exception('invalid section for venue')
 
@@ -132,9 +140,12 @@ class Event:
 
                 seat += 1
 
-        return []
+        return {}
 
     def _best_seats(self, howmany):
+        """
+        The best seats are just the best seats in the lower section
+        """
         for section_idx, section in enumerate(self.venue):
 
             tickets = self._section_best_seats(section_idx, howmany)
@@ -142,4 +153,5 @@ class Event:
             if tickets:
                 return {'section': section_idx, 'tickets': tickets}
 
+        # no seats found
         return {}
