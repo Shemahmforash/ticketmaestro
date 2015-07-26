@@ -14,11 +14,26 @@ class Event:
     bookings = []
 
     def __init__(self, sections, rows, seats_per_row):
-        for s in range(sections):
+        self.sections = sections
+        self.rows = rows
+        self.seats_per_row = seats_per_row
+
+        self._init_event_data()
+
+        # print('venue')
+        # print(self.venue)
+        # print('bookings')
+        # print(self.bookings)
+
+    def _init_event_data(self):
+        """This should call an external API or
+        some persistent storage, which would give the room information"""
+
+        for s in range(self.sections):
             section = []
-            for r in range(rows):
+            for r in range(self.rows):
                 row = []
-                for s in range(seats_per_row):
+                for s in range(self.seats_per_row):
                     row.append(0)
                 section.append(row)
 
@@ -26,15 +41,6 @@ class Event:
 
         # make bookings a copy of venue
         self.bookings = copy.deepcopy(self.venue)
-
-        print('venue')
-        print(self.venue)
-        print('bookings')
-        print(self.bookings)
-
-    def _get_event_data(self):
-        """This should call an external API or
-        some persistent storage, which would give the room information"""
 
         pass
 
@@ -46,7 +52,7 @@ class Event:
         ev.book_tickets(0, {0: [0,1]}, user_id)
         """
 
-        if (not self.venue[section]):
+        if (section < 0 or len(self.venue) <= section):
             raise Exception('invalid section for venue')
 
         for row, positions in seats.iteritems():
@@ -62,15 +68,15 @@ class Event:
 
                 self.bookings[section][row][position] = user_id
 
-        print('venue')
-        print(self.venue)
-        print('bookings')
-        print(self.bookings)
+        # print('venue')
+        # print(self.venue)
+        # print('bookings')
+        # print(self.bookings)
 
     def buy_tickets(self, section, seats, user_id):
         """ In order to buy tickets, one must book them first
         """
-        if (not self.venue[section]):
+        if (section < 0 or len(self.venue) <= section):
             raise Exception('invalid section for venue')
 
         for row, positions in seats.iteritems():
@@ -88,10 +94,10 @@ class Event:
                 self.bookings[section][row][position] = 0
                 self.venue[section][row][position] = 1
 
-        print('venue')
-        print(self.venue)
-        print('bookings')
-        print(self.bookings)
+        # print('venue')
+        # print(self.venue)
+        # print('bookings')
+        # print(self.bookings)
 
     def buy_best_seats(self, howmany, user_id):
         tickets = self._best_seats(howmany)
@@ -126,7 +132,7 @@ class Event:
         tries to find consecutive seats by going trough all rows in section
         """
 
-        if (not self.venue[section]):
+        if (section < 0 or len(self.venue) <= section):
             raise Exception('invalid section for venue')
 
         # go trough all rows in section and find n consecutive empty seats
@@ -149,7 +155,7 @@ class Event:
         for section_idx, section in enumerate(self.venue):
 
             tickets = self._section_best_seats(section_idx, howmany)
-            print('tickets %s , section %s ' % (tickets, section_idx))
+            # print('tickets %s , section %s ' % (tickets, section_idx))
             if tickets:
                 return {'section': section_idx, 'tickets': tickets}
 
