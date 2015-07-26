@@ -5,6 +5,14 @@ class Event:
 
     """
     This class represents an event venue
+
+    to use it, one can:
+    import event
+
+    user_id = 123
+
+    ev = event.Event(2, 5, 10)
+    ev.buy_best_seats(1, user_id)
     """
 
     # an array of arrays representing the venue structure
@@ -50,6 +58,8 @@ class Event:
         Seats - a dictionary with row: [positions]
         for instance, to book first 2 seats in first row:
         ev.book_tickets(0, {0: [0,1]}, user_id)
+
+        bookings are by user to avoid conflicting
         """
 
         if (section < 0 or len(self.venue) <= section):
