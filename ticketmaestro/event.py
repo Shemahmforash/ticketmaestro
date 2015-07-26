@@ -64,7 +64,7 @@ class Event:
 
                 if (self.bookings[section][row][position] and
                         self.bookings[section][row][position] != user_id):
-                    raise Exception('position already booked!')
+                    raise Exception('seat already booked!')
 
                 self.bookings[section][row][position] = user_id
 
@@ -85,6 +85,9 @@ class Event:
             for position in positions:
                 if (self.venue[section][row][position] == 1):
                     raise Exception('seat already bought!')
+
+                if (not self.bookings[section][row][position]):
+                    raise Exception('Cannot buy without booking first!')
 
                 if (self.bookings[section][row][position] and
                         self.bookings[section][row][position] != user_id):
