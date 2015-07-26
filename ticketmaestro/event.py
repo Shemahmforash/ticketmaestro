@@ -123,21 +123,23 @@ class Event:
 
         # go trough all rows in section and find n consecutive empty seats
         for row_idx, row in enumerate(self.venue[section]):
-            idx = 0
-            while idx < len(row):
-                if [0] * howmany == row[idx:idx + howmany]:
-                    return {'row': row_idx, 'seats': range(idx, idx + howmany)}
+            seat = 0
+            while seat < len(row):
+                if [0] * howmany == row[seat:seat + howmany]:
+                    return {
+                        'row': row_idx, 'seats': range(seat, seat + howmany)
+                    }
 
-                idx += 1
+                seat += 1
 
         return []
 
     def _best_seats(self, howmany):
-        for idx, section in enumerate(self.venue):
+        for section_idx, section in enumerate(self.venue):
 
-            tickets = self._section_best_seats(idx, howmany)
-            print('tickets %s , section %s ' % (tickets, idx))
+            tickets = self._section_best_seats(section_idx, howmany)
+            print('tickets %s , section %s ' % (tickets, section_idx))
             if tickets:
-                return {'section': idx, 'tickets': tickets}
+                return {'section': section_idx, 'tickets': tickets}
 
         return {}
