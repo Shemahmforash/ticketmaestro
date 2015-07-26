@@ -122,7 +122,7 @@ class Event:
             raise Exception('invalid section for venue')
 
         # go trough all rows in section and find n consecutive empty seats
-        for row_idx, row in enumerate(self.bookings[section]):
+        for row_idx, row in enumerate(self.venue[section]):
             idx = 0
             while idx < len(row):
                 if [0] * howmany == row[idx:idx + howmany]:
